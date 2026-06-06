@@ -1,0 +1,86 @@
+# UtilityScope APAC
+
+Daily intelligence platform for Asia-Pacific power markets.
+
+## Site structure
+
+```
+utilityscope/
+├── index.html              ← Homepage / dashboard
+├── css/style.css           ← All styles (shared)
+├── js/nav.js               ← Shared nav + footer
+├── data/markets.json       ← ALL DATA LIVES HERE — edit this weekly
+├── pages/
+│   ├── markets.html        ← Markets overview
+│   ├── utilities.html      ← Utility directory
+│   ├── events.html         ← Event feed
+│   ├── newsletter.html     ← Signup page
+│   ├── about.html          ← About + methodology
+│   └── methodology.html    ← (same as about)
+├── markets/
+│   ├── japan.html          ← Full Japan market page
+│   ├── australia.html      ← Stub (expand later)
+│   ├── singapore.html      ← Stub (expand later)
+│   ├── korea.html          ← Stub (expand later)
+│   └── taiwan.html         ← Stub (expand later)
+└── utilities/
+    └── tepco.html          ← TEPCO profile (expand for others)
+```
+
+## Updating data (your weekly task — no coding required)
+
+Open `data/markets.json` in any text editor and update:
+
+1. **prices** — change the `"price"` field for each market
+2. **change** — update the % change (use minus sign for down: "-1.2")
+3. **status** — "normal", "elevated", or "alert"
+4. **demand** — the percentage (number only, e.g. 71)
+5. **demandStatus** — "Normal", "Elevated", or "Grid Alert"
+6. **events** — add new events at the top of the events array
+7. **lastUpdated** — change the date/time string
+
+Save the file. Redeploy (or if Vercel is connected to GitHub, just commit and push).
+
+## Deploying to Vercel (one-time setup)
+
+1. Create a free account at vercel.com
+2. Click "Add New Project"
+3. Import from GitHub (upload this folder to a GitHub repo first)
+4. Vercel auto-detects static site — click Deploy
+5. Your site is live at yourname.vercel.app
+6. Add custom domain in Vercel Settings → Domains
+
+Every time you update `data/markets.json` and push to GitHub, Vercel redeploys automatically in ~30 seconds.
+
+## Connecting Mailchimp
+
+1. Create free Mailchimp account
+2. Create an Audience (email list)
+3. Go to Embedded Forms → generate signup form code
+4. Replace the form in `pages/newsletter.html` with your Mailchimp embed code
+
+## Adding a new event
+
+In `data/markets.json`, add to the top of the `"events"` array:
+
+```json
+{
+  "id": 7,
+  "severity": "high",
+  "market": "Japan",
+  "title": "Your event title here",
+  "summary": "A sentence or two explaining what happened and why it matters.",
+  "time": "08:45",
+  "date": "6 Jun 2026"
+}
+```
+
+Severity options: "high", "medium", "low"
+
+## Pages to build next (with Claude Code)
+
+- Full Australia market page (copy japan.html, update content)
+- Full Singapore, Korea, Taiwan market pages
+- KEPCO, AGL, Origin utility profiles (copy tepco.html)
+- Newsletter archive index page
+- Methodology standalone page

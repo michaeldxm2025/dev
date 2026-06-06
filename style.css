@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UtilityScope APAC — Daily Intelligence for Asia-Pacific Power Markets</title>
+<meta name="description" content="The essential daily briefing for power market professionals working across Asia-Pacific. Prices, grid status, events and utility intelligence for Japan, Australia, Singapore, Korea and Taiwan.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ── Hero ── */
+.hero {
+  padding: 140px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,201,167,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-kicker {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 24px;
+}
+
+.live-pill {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 1.5px;
+  color: var(--teal);
+  background: rgba(0,201,167,0.08);
+  border: 1px solid rgba(0,201,167,0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.live-pill::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.hero-headline { max-width: 780px; }
+.hero-headline .display { display: block; }
+.hero-headline .display em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.hero-sub {
+  font-size: 18px;
+  color: var(--text2);
+  max-width: 560px;
+  margin-top: 20px;
+  line-height: 1.65;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 16px;
+  margin-top: 36px; flex-wrap: wrap;
+}
+
+.hero-social-proof {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 20px;
+  letter-spacing: 0.5px;
+}
+
+.hero-social-proof span { color: var(--teal); }
+
+/* ── Price strip ── */
+.price-strip {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+  margin-top: 56px;
+}
+
+.price-strip-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.price-strip-head-left {
+  display: flex; align-items: center; gap: 12px;
+}
+
+.price-strip-head h3 {
+  font-family: var(--sans);
+  font-size: 13px; font-weight: 600;
+  color: var(--text);
+}
+
+.price-strip-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.price-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 120px 120px 100px 130px;
+  align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.price-row:last-child { border-bottom: none; }
+.price-row:hover { background: rgba(255,255,255,0.02); }
+
+.market-cell {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.market-flag { font-size: 20px; }
+
+.market-info .market-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text);
+}
+
+.market-info .market-exchange {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+.price-cell {
+  font-family: var(--mono);
+  font-size: 15px; font-weight: 500;
+  color: var(--text);
+}
+
+.price-unit {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+.change-cell {
+  font-family: var(--mono);
+  font-size: 13px; font-weight: 500;
+}
+
+.demand-cell { display: flex; flex-direction: column; gap: 5px; }
+
+.demand-bar-wrap {
+  height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  width: 80px;
+}
+
+.demand-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+.demand-pct {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.status-cell {
+  display: flex; align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+}
+
+/* ── Event feed ── */
+.event-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: start;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.event-card:last-child { border-bottom: none; }
+.event-card:hover { background: rgba(255,255,255,0.02); }
+
+.event-sev {
+  font-family: var(--mono);
+  font-size: 9px; font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.sev-high   { background: rgba(255,107,107,0.12); color: var(--red);   border: 1px solid rgba(255,107,107,0.25); }
+.sev-medium { background: rgba(245,166,35,0.12);  color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+.sev-low    { background: rgba(74,222,128,0.12);  color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+
+.event-title {
+  font-size: 14px; font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.event-summary {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.event-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 6px;
+}
+
+.event-time {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+/* ── Stats row ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 64px;
+}
+
+.stat-box {
+  background: var(--bg2);
+  padding: 28px 24px;
+}
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.stat-sub {
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 6px;
+}
+
+/* ── Why section ── */
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.why-item {
+  background: var(--bg2);
+  padding: 32px;
+}
+
+.why-item h3 {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.why-icon {
+  font-size: 20px;
+  width: 36px; height: 36px;
+  background: rgba(0,201,167,0.1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.why-item p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.65;
+}
+
+/* ── Newsletter CTA ── */
+.newsletter-cta {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-cta::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 400px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+}
+
+.newsletter-form {
+  display: flex; gap: 10px;
+  max-width: 440px;
+  margin: 28px auto 0;
+}
+
+.newsletter-form input {
+  flex: 1;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  padding: 11px 16px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.newsletter-form input:focus { border-color: var(--teal); }
+.newsletter-form input::placeholder { color: var(--text3); }
+
+.newsletter-note {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 12px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .hero { padding: 100px 0 60px; }
+  .price-row { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .price-row > *:nth-child(n+5) { display: none; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .newsletter-cta { padding: 36px 24px; }
+  .newsletter-form { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<main>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="page-wrap">
+    <div class="hero-kicker">
+      <div class="live-pill">LIVE MONITOR</div>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--text3)" id="hero-time">Loading...</span>
+    </div>
+    <div class="hero-headline">
+      <span class="display">The <em>intelligence layer</em><br>for APAC power markets</span>
+    </div>
+    <p class="hero-sub">Daily prices, grid status, regulatory events and utility intelligence across Japan, Australia, Singapore, South Korea and Taiwan — in one place.</p>
+    <div class="hero-actions">
+      <a href="pages/newsletter.html" class="btn btn-primary">Get the free brief →</a>
+      <a href="pages/markets.html" class="btn btn-outline">Explore markets</a>
+    </div>
+    <p class="hero-social-proof">Covering <span>5 markets</span> · Updated daily by <span>09:00 SGT</span> · Free to read</p>
+
+    <!-- PRICE STRIP -->
+    <div class="price-strip mt-48">
+      <div class="price-strip-head">
+        <div class="price-strip-head-left">
+          <span class="live-pill" style="font-size:9px">LIVE</span>
+          <h3>Benchmark Prices</h3>
+        </div>
+        <span class="price-strip-meta" id="strip-time">—</span>
+      </div>
+      <div id="price-rows"><!-- JS renders --></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<section style="padding-top:0">
+  <div class="page-wrap">
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">Markets monitored</div>
+        <div class="stat-value text-teal">5</div>
+        <div class="stat-sub">Phase 1 · APAC</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Events tracked today</div>
+        <div class="stat-value" id="event-count">—</div>
+        <div class="stat-sub">Grid · regulatory · market</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Utilities in directory</div>
+        <div class="stat-value">9</div>
+        <div class="stat-sub">Major APAC operators</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Newsletter subscribers</div>
+        <div class="stat-value text-teal">2,841</div>
+        <div class="stat-sub">+142 this week</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EVENT FEED + WHY ── -->
+<section>
+  <div class="page-wrap">
+    <div style="display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start">
+
+      <!-- Events -->
+      <div>
+        <div class="section-kicker">Today's intelligence</div>
+        <h2 class="section-heading" style="margin-bottom:24px">Market events</h2>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div id="event-feed"><!-- JS renders --></div>
+          <div style="padding:16px 24px;border-top:1px solid var(--border)">
+            <a href="pages/events.html" style="font-size:13px;color:var(--teal);text-decoration:none;font-weight:500">View all events →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        <div class="section-kicker">Grid status</div>
+        <h2 class="section-heading" style="margin-bottom:24px;font-size:24px">Reserve margins</h2>
+        <div id="reserve-cards"><!-- JS renders --></div>
+
+        <div style="margin-top:24px">
+          <div class="section-kicker">Latest update</div>
+          <div class="card" style="margin-top:12px">
+            <p style="font-size:13px;color:var(--text2);line-height:1.65">Taiwan grid under stress this morning with reserve margins at 6% — below the 7.5% safety threshold. TPC has issued a demand conservation notice. Situation is being monitored closely.</p>
+            <p style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:12px">Updated 08:31 SGT · 5 Jun 2026</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY UTILITYSCOPE ── -->
+<section>
+  <div class="page-wrap">
+    <div style="text-align:center;max-width:600px;margin:0 auto 48px">
+      <div class="section-kicker">Why UtilityScope</div>
+      <h2 class="section-heading">Built for market professionals</h2>
+      <p style="color:var(--text2);margin-top:12px;font-size:15px">Stop opening six websites every morning. We aggregate the signals that matter across APAC power markets so you can start the day informed.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <h3><span class="why-icon">⚡</span>Single morning briefing</h3>
+        <p>Prices, grid status, overnight events and key developments across 5 markets in one place. Read it in under 3 minutes.</p>
+      </div>
+      <div class="why-item">
+        <h3><span class="why-icon">🏭</span>Utility-level intelligence</h3>
+        <p>We organise data around utilities — not abstract feeds. Find TEPCO, KEPCO and AGL the same way you think about the market.</p>
+      </div>
+      <div class="why-item">
+        <h3><span class="why-icon">🌱</span>Transition-forward</h3>
+        <p>Renewable targets, nuclear restarts, battery storage policy and grid investment — energy transition is a core part of every market page.</p>
+      </div>
+      <div class="why-item">
+        <h3><span class="why-icon">📊</span>Source-transparent data</h3>
+        <p>Every data point shows its source and update frequency. We label what is official, what is estimated, and what is inferred.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER CTA ── -->
+<section>
+  <div class="page-wrap">
+    <div class="newsletter-cta">
+      <div class="section-kicker" style="text-align:center">Free weekly brief</div>
+      <h2 class="section-heading" style="text-align:center;max-width:520px;margin:0 auto">Every Friday — the week in APAC power</h2>
+      <p style="color:var(--text2);margin-top:12px;font-size:15px;text-align:center">Markets moved, regulation changed, utilities acted. Delivered free to your inbox.</p>
+      <form class="newsletter-form" id="hero-form" onsubmit="handleSignup(event,'hero-form')">
+        <input type="email" placeholder="your@email.com" required aria-label="Email address">
+        <button type="submit" class="btn btn-primary" style="white-space:nowrap">Subscribe free</button>
+      </form>
+      <p class="newsletter-note">No spam. Unsubscribe anytime. 2,841 professionals already signed up.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="js/nav.js"></script>
+<script>
+async function loadData() {
+  const base = window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html') ? '' : '/';
+  const res = await fetch(base + 'data/markets.json');
+  return res.json();
+}
+
+function demandColor(pct) {
+  if (pct >= 90) return 'var(--red)';
+  if (pct >= 80) return 'var(--amber)';
+  return 'var(--teal)';
+}
+
+function renderPriceRows(markets) {
+  const container = document.getElementById('price-rows');
+  container.innerHTML = markets.map(m => `
+    <div class="price-row">
+      <div class="market-cell">
+        <span class="market-flag">${m.flag}</span>
+        <div class="market-info">
+          <div class="market-name">${m.name}</div>
+          <div class="market-exchange">${m.exchange}</div>
+        </div>
+      </div>
+      <div class="price-cell">
+        ${m.price}
+        <div class="price-unit">${m.unit}</div>
+      </div>
+      <div class="change-cell ${parseFloat(m.change) >= 0 ? 'up' : 'down'}">
+        ${parseFloat(m.change) >= 0 ? '▲' : '▼'} ${Math.abs(parseFloat(m.change))}%
+      </div>
+      <div class="demand-cell">
+        <div class="demand-bar-wrap">
+          <div class="demand-bar" style="width:${m.demand}%;background:${demandColor(m.demand)}"></div>
+        </div>
+        <div class="demand-pct">${m.demandLabel} demand</div>
+      </div>
+      <div class="status-cell">
+        <span class="dot dot-${m.status === 'normal' ? 'green' : m.status === 'elevated' ? 'amber' : 'red'}"></span>
+        <span>${m.demandStatus}</span>
+      </div>
+      <div>
+        <a href="markets/${m.slug}.html" style="font-size:12px;color:var(--teal);text-decoration:none;font-weight:500;font-family:var(--mono)">View market →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderEvents(events) {
+  const container = document.getElementById('event-feed');
+  document.getElementById('event-count').textContent = events.length;
+  container.innerHTML = events.slice(0, 5).map(e => `
+    <div class="event-card">
+      <span class="event-sev sev-${e.severity}">${e.severity}</span>
+      <div>
+        <div class="event-title">${e.title}</div>
+        <div class="event-summary">${e.summary}</div>
+        <div class="event-meta">${e.market} · ${e.date}</div>
+      </div>
+      <div class="event-time">${e.time}</div>
+    </div>
+  `).join('');
+}
+
+function renderReserveCards(markets) {
+  const container = document.getElementById('reserve-cards');
+  container.innerHTML = markets.map(m => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:18px">${m.flag}</span>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+          <span style="font-size:13px;font-weight:500">${m.name}</span>
+          <span style="font-family:var(--mono);font-size:11px;color:${demandColor(m.demand)}">${m.demandLabel}</span>
+        </div>
+        <div style="height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden">
+          <div style="height:100%;width:${m.demand}%;background:${demandColor(m.demand)};border-radius:2px;transition:width 1s ease"></div>
+        </div>
+      </div>
+      <span class="dot dot-${m.status === 'normal' ? 'green' : m.status === 'elevated' ? 'amber' : 'red'}"></span>
+    </div>
+  `).join('');
+}
+
+function setTime(lastUpdated) {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const mn = String(now.getMinutes()).padStart(2,'0');
+  const timeStr = `${h}:${mn} SGT`;
+  document.getElementById('hero-time').textContent = `${timeStr} · Friday 5 Jun 2026`;
+  document.getElementById('strip-time').textContent = `Last updated ${lastUpdated}`;
+}
+
+function handleSignup(e, formId) {
+  e.preventDefault();
+  const form = document.getElementById(formId);
+  form.innerHTML = '<p style="color:var(--teal);font-family:var(--mono);font-size:13px;text-align:center;padding:12px 0">✓ You\'re on the list. First brief lands Friday.</p>';
+}
+
+loadData().then(data => {
+  renderPriceRows(data.markets);
+  renderEvents(data.events);
+  renderReserveCards(data.markets);
+  setTime(data.lastUpdated);
+});
+</script>
+</body>
+</html>
